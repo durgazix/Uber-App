@@ -82,7 +82,7 @@ Authenticates an existing user and returns an access token.
 {
   "error": "Invalid email or password"
 }
-curl -X POST http://localhost:3000/user/login \
+curl -X POST http://localhost:4000/user/login \
 -H "Content-Type: application/json" \
 -d '{
   "email": "john@example.com",
