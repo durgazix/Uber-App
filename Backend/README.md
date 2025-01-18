@@ -1,5 +1,7 @@
 # User Registration Endpoint Documentation
 
+## 1. Register User
+
 ## Endpoint: `/user/register`
 
 ### Method: POST
@@ -46,3 +48,43 @@ The request body should be a JSON object containing the following fields:
   }
 }
 ```
+# User API Documentation
+
+## 2. Login User
+
+### Endpoint: `/user/login`
+
+### Method: POST
+
+### Description:
+Authenticates an existing user and returns an access token.
+
+### Request Body:
+- `email` (string, required): The email address of the user. Must be a valid email format and at least 5 characters long.
+- `password` (string, required): The password for the user account. Must be at least 6 characters long.
+
+```json
+{
+  "email": "string",    // required, valid email format
+  "password": "string"  // required, min 6 chars
+}
+{
+  "token": "jwt-token-string",
+  "user": {
+    "_id": "mongodb-generated-id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john@example.com"
+  }
+}
+{
+  "error": "Invalid email or password"
+}
+curl -X POST http://localhost:3000/user/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "john@example.com",
+  "password": "password123"
+}'
