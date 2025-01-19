@@ -63,28 +63,96 @@ Authenticates an existing user and returns an access token.
 - `email` (string, required): The email address of the user. Must be a valid email format and at least 5 characters long.
 - `password` (string, required): The password for the user account. Must be at least 6 characters long.
 
+### Example Request:
 ```json
 {
-  "email": "string",    // required, valid email format
-  "password": "string"  // required, min 6 chars
+  "email": "john.doe@example.com",
+  "password": "password123"
 }
+```
+
+### Response:
+- **200 OK**: User successfully authenticated.
+- **400 Bad Request**: Missing or invalid fields in the request body.
+- **401 Unauthorized**: Invalid email or password.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
 {
   "token": "jwt-token-string",
   "user": {
-    "_id": "mongodb-generated-id",
+    "id": "60d0fe4f5311236168a109ca",
     "fullname": {
       "firstname": "John",
       "lastname": "Doe"
     },
-    "email": "john@example.com"
+    "email": "john.doe@example.com"
   }
 }
+```
+
+## 3. Get User Profile
+
+### Endpoint: `/user/profile`
+
+### Method: GET
+
+### Description:
+Fetches the profile of the authenticated user.
+
+### Headers:
+- `Authorization`: Bearer token
+
+### Example Request:
+```bash
+curl -X GET http://localhost:3000/user/profile \
+-H "Authorization: Bearer jwt-token-string"
+```
+
+### Response:
+- **200 OK**: User profile fetched successfully.
+- **401 Unauthorized**: Invalid or missing token.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
 {
-  "error": "Invalid email or password"
+  "id": "60d0fe4f5311236168a109ca",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
 }
-curl -X POST http://localhost:4000/user/login \
--H "Content-Type: application/json" \
--d '{
-  "email": "john@example.com",
-  "password": "password123"
-}'
+```
+
+## 4. Logout User
+
+### Endpoint: `/user/logout`
+
+### Method: GET
+
+### Description:
+Logs out the authenticated user by invalidating the token.
+
+### Headers:
+- `Authorization`: Bearer token
+
+### Example Request:
+```bash
+curl -X GET http://localhost:3000/user/logout \
+-H "Authorization: Bearer jwt-token-string"
+```
+
+### Response:
+- **200 OK**: User logged out successfully.
+- **401 Unauthorized**: Invalid or missing token.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
+{
+  "message": "Logged out successfully"
+}
+```
