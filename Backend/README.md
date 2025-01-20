@@ -2,7 +2,7 @@
 
 ## 1. Register User
 
-## Endpoint: `/user/register`
+## Endpoint: `/users/register`
 
 ### Method: POST
 
@@ -52,7 +52,7 @@ The request body should be a JSON object containing the following fields:
 
 ## 2. Login User
 
-### Endpoint: `/user/login`
+### Endpoint: `/users/login`
 
 ### Method: POST
 
@@ -94,7 +94,7 @@ Authenticates an existing user and returns an access token.
 
 ## 3. Get User Profile
 
-### Endpoint: `/user/profile`
+### Endpoint: `/users/profile`
 
 ### Method: GET
 
@@ -106,7 +106,7 @@ Fetches the profile of the authenticated user.
 
 ### Example Request:
 ```bash
-curl -X GET http://localhost:3000/user/profile \
+curl -X GET http://localhost:3000/users/profile \
 -H "Authorization: Bearer jwt-token-string"
 ```
 
@@ -129,7 +129,7 @@ curl -X GET http://localhost:3000/user/profile \
 
 ## 4. Logout User
 
-### Endpoint: `/user/logout`
+### Endpoint: `/users/logout`
 
 ### Method: GET
 
@@ -141,7 +141,7 @@ Logs out the authenticated user by invalidating the token.
 
 ### Example Request:
 ```bash
-curl -X GET http://localhost:3000/user/logout \
+curl -X GET http://localhost:3000/users/logout \
 -H "Authorization: Bearer jwt-token-string"
 ```
 
@@ -155,4 +155,90 @@ curl -X GET http://localhost:3000/user/logout \
 {
   "message": "Logged out successfully"
 }
+```
+
+# Captain API Documentation
+
+## 1. Register Captain
+
+### Endpoint: `/captains/register`
+
+### Method: POST
+
+### Description:
+This endpoint is used to register a new captain in the system. The captain needs to provide their first name, email, password, and vehicle details.
+
+### Request Body:
+The request body should be a JSON object containing the following fields:
+
+- `fullname.firstname` (string, required): The first name of the captain. Must be at least 3 characters long.
+- `fullname.lastname` (string, optional): The last name of the captain. Must be at least 3 characters long if provided.
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain's account. Must be at least 6 characters long.
+- `vehicle.color` (string, required): The color of the vehicle. Must be at least 3 characters long.
+- `vehicle.plate` (string, required): The plate number of the vehicle. Must be at least 3 characters long.
+- `vehicle.capacity` (integer, required): The capacity of the vehicle. Must be at least 1.
+- `vehicle.vehicleType` (string, required): The type of the vehicle. Must be one of `car`, `motorcycle`, or `auto`.
+
+### Example Request:
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Example Response:
+- **201 Created**: Captain successfully registered.
+- **400 Bad Request**: Missing or invalid fields in the request body.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
+{
+  "token": "jwt-token-string",
+  "captain": {
+    "id": "60d0fe4f5311236168a109ca",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "XYZ123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+### Sample Request:
+```bash
+curl -X POST http://localhost:3000/captains/register \
+-H "Content-Type: application/json" \
+-d '{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}'
 ```
