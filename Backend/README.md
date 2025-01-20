@@ -242,3 +242,134 @@ curl -X POST http://localhost:3000/captains/register \
   }
 }'
 ```
+
+## 2. Login Captain
+
+### Endpoint: `/captains/login`
+
+### Method: POST
+
+### Description:
+Authenticates an existing captain and returns an access token.
+
+### Request Body:
+The request body should be a JSON object containing the following fields:
+
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain's account. Must be at least 6 characters long.
+
+### Example Request:
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Response:
+- **200 OK**: Captain successfully authenticated.
+- **400 Bad Request**: Missing or invalid fields in the request body.
+- **401 Unauthorized**: Invalid email or password.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
+{
+  "token": "jwt-token-string",
+  "captain": {
+    "id": "60d0fe4f5311236168a109ca",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "XYZ123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Sample Request:
+```bash
+curl -X POST http://localhost:3000/captains/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "jane.doe@example.com",
+  "password": "password123"
+}'
+```
+
+## 3. Get Captain Profile
+
+### Endpoint: `/captains/profile`
+
+### Method: GET
+
+### Description:
+Fetches the profile of the authenticated captain.
+
+### Headers:
+- `Authorization`: Bearer token
+
+### Example Request:
+```bash
+curl -X GET http://localhost:3000/captains/profile \
+-H "Authorization: Bearer jwt-token-string"
+```
+
+### Response:
+- **200 OK**: Captain profile fetched successfully.
+- **401 Unauthorized**: Invalid or missing token.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
+{
+  "id": "60d0fe4f5311236168a109ca",
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+## 4. Logout Captain
+
+### Endpoint: `/captains/logout`
+
+### Method: GET
+
+### Description:
+Logs out the authenticated captain by invalidating the token.
+
+### Headers:
+- `Authorization`: Bearer token
+
+### Example Request:
+```bash
+curl -X GET http://localhost:3000/captains/logout \
+-H "Authorization: Bearer jwt-token-string"
+```
+
+### Response:
+- **200 OK**: Captain logged out successfully.
+- **401 Unauthorized**: Invalid or missing token.
+- **500 Internal Server Error**: An error occurred on the server.
+
+### Example Response:
+```json
+{
+  "message": "Logged out successfully"
+}
+```
