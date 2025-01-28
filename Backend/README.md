@@ -358,7 +358,7 @@ Logs out the authenticated captain by invalidating the token.
 
 ### Example Request:
 ```bash
-curl -X GET http://localhost:3000/captains/logout \
+curl -X GET http://localhost:3000/captains/logout
 -H "Authorization: Bearer jwt-token-string"
 ```
 

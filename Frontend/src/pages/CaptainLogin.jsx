@@ -1,17 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { CaptainDataContext } from "../context/CaptainContext";
+
 
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captinData, setCaptainData] = useState({});
 
-  const subMitHandler = (e) => {
+  const {captain, setCaptain} = React.useContext(CaptainDataContext);
+  const navigate = useNavigate();
+
+  const subMitHandler = async (e) => {
     e.preventDefault();
-    setCaptainData({
+    const captainLog = {
       email: email,
       password: password,
-    });
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}captains/login`,
+        captainLog,
+        config
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        setCaptain(data.captain);
+        localStorage.setItem('token', data.token);
+        navigate("/captain-home");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up request:", error.message);
+      }
+    }
+
     setEmail("");
     setPassword("");
   };
@@ -29,7 +62,7 @@ const CaptainLogin = () => {
             subMitHandler(e);
           }}
         >
-          <h3 className="text-lg font-semibold mb-2">What's your Email</h3>
+          <h3 className="text-lg font-semibold mb-2">What&apos;s your Email</h3>
           <input
             required
             value={email}

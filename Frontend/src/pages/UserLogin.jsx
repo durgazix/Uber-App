@@ -1,17 +1,51 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { UserDataContext } from "../context/UserContext.jsx";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
+  // const [userData, setUserData] = useState({});
 
-  const subMitHandler = (e) => {
+  const { setUser } = useContext(UserDataContext);
+  const navigate = useNavigate();
+
+  const subMitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
+    const userData = {
       email: email,
       password: password,
-    });
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}users/login`,
+        userData,
+        config
+      );
+      if (response.status === 201) {
+        const data = response.data;
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate("/home");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up request:", error.message);
+      }
+    }
+    setEmail("");
+    setPassword("");
     setEmail("");
     setPassword("");
   };
@@ -30,7 +64,7 @@ const UserLogin = () => {
             subMitHandler(e);
           }}
         >
-          <h3 className="text-lg font-semibold mb-2">What's your Email</h3>
+          <h3 className="text-lg font-semibold mb-2">What&apos;s your Email</h3>
           <input
             required
             value={email}

@@ -1,23 +1,55 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext.jsx";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [userData, setUserData] = useState("")
+  // const [userData, setUserData] = useState("");
 
-  const subMitHandler = (e) => {
+  const { setUser } = useContext(UserDataContext);
+  const navigate = useNavigate();
+
+  const subMitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
-      fullName:{
-        firstName:firstName,
-        lastName:lastName
+    const newUser = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName,
       },
       email: email,
       password: password,
-    });
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}users/register`,
+        newUser,
+        config
+      );
+      if (response.status === 201) {
+        const data = response.data;
+        // console.log(response.data);
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate("/home");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up request:", error.message);
+      }
+    }
     setEmail("");
     setPassword("");
     setFirstName("");
@@ -38,7 +70,7 @@ const UserSignup = () => {
             subMitHandler(e);
           }}
         >
-          <h3 className="text-lg font-semibold mb-2">What's your Name</h3>
+          <h3 className="text-lg font-semibold mb-2">What&apos;s your Name</h3>
           <div className="flex gap-4 mb-6">
             <input
               required
@@ -57,7 +89,7 @@ const UserSignup = () => {
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
-          <h3 className="text-lg font-semibold mb-2">What's your Email</h3>
+          <h3 className="text-lg font-semibold mb-2">What&apos;s your Email</h3>
           <input
             required
             className="bg-[#eeeeee] mb-6 rounded px-4 py-2 border w-full text-lg placeholder:text-base"
@@ -73,10 +105,12 @@ const UserSignup = () => {
             type="password"
             placeholder="password"
             value={password}
-            onChange={(e)=>{setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
           <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placehold:text-base">
-            Login
+            Create Account
           </button>
         </form>
         <p className="text-center">
