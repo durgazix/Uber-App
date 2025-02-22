@@ -1,32 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const WaitingForDriver = (props) => {
+const FinishRide = (props) => {
   return (
-    <div>
+    <div className="mt-5">
       <h5
         onClick={() => {
-          props.waitingForDriver(false);
+          props.setFinishRidePanel(false);
         }}
         className="absolute p-1 top-0 w-[94%] text-center"
       >
         <i className="text-3xl bg-gray-100 ri-arrow-down-wide-line"></i>
       </h5>
-      <div className="flex items-center justify-between">
-        <img
-          className="h-16"
-          src="https://swyft.pl/wp-content/uploads/2023/05/can-1-person-use-uberx.jpg"
-          alt=""
-        />
-        <div className="text-right">
-          <h2 className="text-lg font-medium">DURGA</h2>
-          <h4 className="text-xl font-semibold -mt-1 -mb-1">OD04 PT 6336</h4>
-          <p className="text-sm text-gray-600">Black Defender Carbon fibre</p>
-          <h3 className="text-lg font-medium">
-            <i className="ri-star-s-fill"></i>4.9
-          </h3>
+      <h3 className="text-2xl font-semibold mb-5 mt-2">Finish This Ride!</h3>
+      <div className="flex items-center justify-between gap-3 p-3 rounded-lg bg-green-200 shadow-md shadow-orange-500 mt-4">
+        <div className="flex items-center gap-3">
+          <img
+            className="h-12 w-12 rounded-full"
+            src="https://th.bing.com/th?id=OIP.YHCtUpoNz1wqYbf0d9tIUQHaLO&w=203&h=307&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+            alt=""
+          />
+          <h3 className="text-xl font-medium">Vanshika Kumari</h3>
         </div>
+        <h5 className="font-semibold text-lg">4.4 Kms</h5>
       </div>
-
       <div className="flex gap-3 items-center justify-between flex-col">
         <div className="w-full mt-5">
           <div className="flex items-center gap-6 p-3 border-b-2">
@@ -52,9 +49,21 @@ const WaitingForDriver = (props) => {
             <div>
               <h3 className="font-medium text-xl">₹186.56</h3>
               <p className="text-base mt-1 text-gray-600">
-                Online Payment Method, Cash
+                Online Payment Method/Cash
               </p>
             </div>
+          </div>
+        </div>
+        <div className="mt-6 w-full">
+          <Link
+            to="/captain-home"
+            className="w-full mt-2 flex justify-center bg-green-600 font-semibold text-gray p-2 rounded-lg text-lg"
+          >
+            Complete This Ride
+          </Link>
+          <div>
+          <h3 className="p-3 font-semibold mt-2 text-center text-lg ">I Hope you feel safe and Thankyou for taking ride With Durga&apos;s Cart .</h3>
+          <p className="text-2xl text-center font-extrabold">----*_*----</p>
           </div>
         </div>
       </div>
@@ -62,4 +71,4 @@ const WaitingForDriver = (props) => {
   );
 };
 
-export default WaitingForDriver;
+export default FinishRide;
