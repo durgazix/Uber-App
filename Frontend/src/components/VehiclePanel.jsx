@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
 const VehiclePanel = (props) => {
   return (
@@ -15,6 +15,7 @@ const VehiclePanel = (props) => {
       <div
         onClick={() => {
           props.setConfirmRidePanel(true);
+          props.selectVehicle('car')
         }}
         className="flex border-2 active:border-black mb-2 rounded-2xl w-full items-center p-2 justify-between"
       >
@@ -35,11 +36,12 @@ const VehiclePanel = (props) => {
             Preferable, Compact Rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">₹186.56</h2>
+        <h2 className="text-xl font-semibold">₹{props.fare.car}</h2>
       </div>
       <div
         onClick={() => {
           props.setConfirmRidePanel(true);
+          props.selectVehicle('moto')
         }}
         className="flex border-2 active:border-black mb-2 rounded-2xl w-full items-center p-2 justify-between"
       >
@@ -60,11 +62,12 @@ const VehiclePanel = (props) => {
             Suitable, MotorCycle Rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">₹86.34</h2>
+        <h2 className="text-xl font-semibold">₹{props.fare.moto}</h2>
       </div>
       <div
         onClick={() => {
           props.setConfirmRidePanel(true);
+          props.selectVehicle('auto')
         }}
         className="flex border-2 active:border-black mb-2 rounded-2xl w-full items-center p-2 justify-between"
       >
@@ -85,10 +88,22 @@ const VehiclePanel = (props) => {
             Afforadable, AutoRiska Rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">₹120.65</h2>
+        <h2 className="text-xl font-semibold">₹{props.fare.auto}</h2>
       </div>
     </div>
   );
 };
+
+VehiclePanel.propTypes = {
+    setVehiclePanel: PropTypes.func.isRequired,
+    setConfirmRidePanel: PropTypes.func.isRequired,
+    fare: PropTypes.shape({
+        car: PropTypes.number,
+        auto: PropTypes.number,
+        moto: PropTypes.number
+    }),
+    selectVehicle: PropTypes.func.isRequired
+};
+
 
 export default VehiclePanel;

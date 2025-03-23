@@ -1,12 +1,16 @@
-import React from "react";
+import PropTypes from "prop-types";
 
-const ConfirmRide = (props) => {
+const ConfirmRide = ({ setVehiclePanel, setConfirmRidePanel, setVehicleFound, createRide, pickup, destination, fare, vehicleType }) => {
   return (
     <div>
       <h5
         onClick={() => {
-          props.setVehiclePanel(false);
-          props.setConfirmRidePanel(false);
+          if (typeof setVehiclePanel === "function") { 
+            setVehiclePanel(false);
+          } else {
+            console.error("setVehiclePanel is not a function");
+          }
+          setConfirmRidePanel(false);
         }}
         className="absolute p-1 top-0 w-[94%] text-center"
       >
@@ -18,49 +22,65 @@ const ConfirmRide = (props) => {
         <img
           className="h-20"
           src="https://swyft.pl/wp-content/uploads/2023/05/can-1-person-use-uberx.jpg"
-          alt=""
+          alt="Car"
         />
         <div className="w-full mt-5">
           <div className="flex items-center gap-6 p-3 border-b-2">
-            <i className="text-xl ri-map-pin-2-fill"></i>
+            <i className="text-xl ri-map-pin-user-fill"></i>
             <div>
-              <h3 className="font-medium text-xl">561/11-A</h3>
+              <h3 className="font-medium text-xl">Pickup</h3>
               <p className="text-base mt-1 text-gray-600">
-                Near JJ Square, Gunupur
+                {pickup}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-6 p-3 border-b-2">
-            <i className="text-xl ri-map-pin-user-fill"></i>
+            <i className="text-xl ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="font-medium text-xl">Mirchi Masala</h3>
+              <h3 className="font-medium text-xl">Destination</h3>
               <p className="text-base mt-1 text-gray-600">
-                Near BN Market, Gunupur, Rayagada
+              {destination}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-6 p-2">
             <i className="text-xl ri-currency-fill"></i>
             <div>
-              <h3 className="font-medium text-xl">₹186.56</h3>
+              <h3 className="font-medium text-xl">Esimated Fare</h3>
               <p className="text-base mt-1 text-gray-600">
-                Online Payment Method, Cash
+              ₹{fare && fare[vehicleType] ? fare[vehicleType] : "N/A"}
               </p>
             </div>
           </div>
         </div>
         <button
           onClick={() => {
-            props.setVehicleFound(true);
-            props.setConfirmRidePanel(false);
+            setVehicleFound(true);
+            setConfirmRidePanel(false);
+            createRide()
           }}
-          className="w-full mt-5 bg-green-600 font-semibold text-white p-2 rounded-lg text-base"
+          className="w-full mt-3 bg-green-600 font-semibold text-white p-2 rounded-lg text-base"
         >
           Confirm your Vehicle
         </button>
       </div>
     </div>
   );
+};
+
+ConfirmRide.propTypes = {
+  setVehiclePanel: PropTypes.func.isRequired,
+  setConfirmRidePanel: PropTypes.func.isRequired,
+  setVehicleFound: PropTypes.func.isRequired,
+  createRide: PropTypes.func.isRequired,
+  pickup: PropTypes.string.isRequired,
+  destination: PropTypes.string.isRequired,
+  fare: PropTypes.shape({
+          car: PropTypes.number,
+          auto: PropTypes.number,
+          moto: PropTypes.number
+  }).isRequired,
+  vehicleType: PropTypes.string
 };
 
 export default ConfirmRide;

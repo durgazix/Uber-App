@@ -1,11 +1,11 @@
-import React from "react";
+import PropTypes from "prop-types";
 
-const LookingForDriver = (props) => {
+const LookingForDriver = ({fare, pickup, destination, setVehicleFound, vehicleType}) => {
   return (
     <div>
       <h5
         onClick={() => {
-          props.setVehicleFound(false);
+          setVehicleFound(false);
         }}
         className="absolute p-1 top-0 w-[94%] text-center"
       >
@@ -19,31 +19,31 @@ const LookingForDriver = (props) => {
           src="https://swyft.pl/wp-content/uploads/2023/05/can-1-person-use-uberx.jpg"
           alt=""
         />
-        <div className="w-full mt-5">
-          <div className="flex items-center gap-6 p-3 border-b-2">
-            <i className="text-xl ri-map-pin-2-fill"></i>
+        <div className="w-full">
+        <div className="flex items-center gap-6 p-3 border-b-2">
+            <i className="text-xl ri-map-pin-user-fill"></i>
             <div>
-              <h3 className="font-medium text-xl">561/11-A</h3>
+              <h3 className="font-medium text-xl">Pickup</h3>
               <p className="text-base mt-1 text-gray-600">
-                Near JJ Square, Gunupur
+                {pickup}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-6 p-3 border-b-2">
-            <i className="text-xl ri-map-pin-user-fill"></i>
+            <i className="text-xl ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="font-medium text-xl">Mirchi Masala</h3>
+              <h3 className="font-medium text-xl">destination</h3>
               <p className="text-base mt-1 text-gray-600">
-                Near BN Market, Gunupur, Rayagada
+                {destination}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-6 p-2">
             <i className="text-xl ri-currency-fill"></i>
             <div>
-              <h3 className="font-medium text-xl">₹186.56</h3>
+              <h3 className="font-medium text-xl">Online Payment Method, Cash</h3>
               <p className="text-base mt-1 text-gray-600">
-                Online Payment Method, Cash
+              ₹{fare && fare[vehicleType] ? fare[vehicleType] : "N/A"}
               </p>
             </div>
           </div>
@@ -51,6 +51,19 @@ const LookingForDriver = (props) => {
       </div>
     </div>
   );
+};
+
+LookingForDriver.propTypes = {
+  fare: PropTypes.shape({
+          car: PropTypes.number,
+          auto: PropTypes.number,
+          moto: PropTypes.number
+  }).isRequired,
+  vehicleType: PropTypes.string,
+  pickup: PropTypes.string.isRequired,
+  destination: PropTypes.string.isRequired,
+  setVehicleFound: PropTypes.func.isRequired
+  
 };
 
 export default LookingForDriver;

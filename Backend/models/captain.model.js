@@ -27,10 +27,10 @@ const captainSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
-    soketId:{
+    socketId:{
         type: String
     },
-    statue:{
+    status:{
         type: String,
         enum: ['active', 'inactive'],
         default: 'inactive'

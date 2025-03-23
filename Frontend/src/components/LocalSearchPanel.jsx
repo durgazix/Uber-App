@@ -1,34 +1,47 @@
-import React from "react";
+import PropTypes from "prop-types";
 
-const LocalSearchPanel = (props) => {
-  const locations = [
-    "NH-18, Near GIET University, NC-13 Hostel, Room-No.- 73",
-    "NH-5, Near HITECH College, Hitect food plaza, Hostel No. 5, Room No - 6",
-    "NH-16, Near Mugpal High School, ICICI Bank, Mugpal Village",
-    "NH-20, Near Saraswati sishu vidya mandir, Rasulpur Block, Room-No.- 73",
-  ];
-
+const LocalSearchPanel = ({ suggestions, setPickup, setVehiclePanel, setPanelOpen, setDestination, activeField, setActiveField}) => {
+  const handleSuggestionClick = (suggestion) => {
+    if (activeField === "pickup") {
+      setPickup(suggestion.description);
+    } else if (activeField === "destination") {
+      setDestination(suggestion.description);
+    }
+    // setVehiclePanel(true);
+    // setPanelOpen(false);
+    // setActiveField(" ");
+  };
+  
   return (
     <div>
-      {locations.map(function (elem) {
-        return (
+      {/* Display fetched suggestions */}
+      {suggestions.length > 0 ? (
+        suggestions.map((suggestion, index) => (
           <div
-            key={elem}
-            onClick={() => {
-              props.setVehiclePanel(true);
-              props.setPanelOpen(false);
-            }}
-            className="flex items-center border-2 p-3 border-gray-200 active:border-black rounded-xl gap-5 my-3 justify-start"
+            key={suggestion.place_id || index}
+            onClick={() => handleSuggestionClick(suggestion)}
+            className="flex gap-4 border-2 p-3 border-gray-50 active:border-black rounded-xl items-center my-2 justify-start cursor-pointer"
           >
-            <h2 className="bg-[#eee] flex items-center justify-center w-16 h-10 rounded-full px-2">
-              <i className="ri-map-pin-2-fill"></i>
+            <h2 className="bg-[#eee] h-8 flex items-center justify-center w-12 rounded-full">
+              <i className="ri-map-pin-fill"></i>
             </h2>
-            <h4 className="font-medium textbase">{elem}</h4>
+            <h4 className="font-medium">{suggestion.description}</h4>
           </div>
-        );
-      })}
+        ))
+      ) : (
+        <p>No suggestions found</p>
+      )}
     </div>
   );
+};
+
+LocalSearchPanel.propTypes = {
+  suggestions: PropTypes.array.isRequired,
+  setPickup: PropTypes.func.isRequired,
+  setDestination: PropTypes.func.isRequired,
+  activeField: PropTypes.string.isRequired,
+  setVehiclePanel: PropTypes.func.isRequired,
+  setPanelOpen: PropTypes.func.isRequired,
 };
 
 export default LocalSearchPanel;
